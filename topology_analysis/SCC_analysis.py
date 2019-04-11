@@ -96,20 +96,20 @@ def decompose_SCC(l_nodes, lt_links_data):
     l_remained_nodes = l_nodes.copy()    
     print("the number of nodes to analyze is", len(l_remained_nodes))
     dic_startnode_setlinks = {}
-    l_SCC = []
+    ll_SCC = []
     
     for t_link in lt_links_data:
         dic_startnode_setlinks.setdefault(t_link[0],set([])).add(t_link)
 
     while(l_remained_nodes):
-        l_SCC += find_SCC_under_startnode(l_remained_nodes.pop(0), l_remained_nodes, dic_startnode_setlinks)
+        ll_SCC += find_SCC_under_startnode(l_remained_nodes.pop(0), l_remained_nodes, dic_startnode_setlinks)
         """
         choose one node and make it start node.
         find SCC containing that start node and SCC whose hierarchy is lower than SCC containing start node
         repeat until find all SCCs
         """
 
-    return l_SCC
+    return ll_SCC
 
 
 def is_SCC1_over_SCC2(SCC1, SCC2):

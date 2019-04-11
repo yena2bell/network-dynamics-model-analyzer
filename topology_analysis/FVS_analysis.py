@@ -5,6 +5,33 @@ Created on Thu Apr 11 15:26:02 2019
 @author: jwKim
 """
 import copy
+import SCC_analysis
+
+def FVS_finding(l_nodes_data, lt_links_data):
+    ll_SCC = SCC_analysis.decompose_SCC(l_nodes_data, lt_links_data)
+    lll_FVSs_of_SCC = []
+    for l_SCC in ll_SCC:
+        if len(l_SCC)>=2:
+            l_nodes_SCC = l_SCC
+            lt_links_SCC = list(filter(lambda x: x[0] in l_nodes_SCC and x[1] in l_nodes_SCC, lt_links_data))
+            ll_FVS_of_SCC = FVS_finding_basic(l_nodes_SCC, lt_links_SCC)
+            lll_FVSs_of_SCC.append(ll_FVS_of_SCC)
+        else:
+            for t_link in lt_links_data:
+                if l_SCC[0] == t_link[0] and l_SCC[0] == t_link[1]:
+                    lll_FVSs_of_SCC.append([[l_SCC[0]]])
+    
+    ll_FVS = lll_FVSs_of_SCC.pop()
+    print(lll_FVSs_of_SCC)
+    while lll_FVSs_of_SCC:
+        ll_FVS_SCC = lll_FVSs_of_SCC.pop()
+        ll_FVS_updated = []
+        for l_FVS in ll_FVS:
+            for l_FVS_SCC in ll_FVS_SCC:
+                ll_FVS_updated.append(l_FVS_SCC+l_FVS)
+        ll_FVS = ll_FVS_updated
+    
+    return ll_FVS
 
 
 def conversion_of_combination_num_to_list_of_comb(i_num_of_combination, i_sum_selfloopnodes):
@@ -20,8 +47,8 @@ def conversion_of_combination_num_to_list_of_comb(i_num_of_combination, i_sum_se
         i_position+=1
         i_num_of_combination = i_num_of_combination>>1
     
-    for i,i_node in reversed(list(enumerate(l_list_of_comb))):
-        if int(i_sum_selfloopnodes/pow(2,i_node))%2:
+    for i in range(len(l_list_of_comb)-1,-1,-1):
+        if int(i_sum_selfloopnodes/pow(2,l_list_of_comb[i]))%2:
             l_list_of_comb.pop(i)
     
     return l_list_of_comb
