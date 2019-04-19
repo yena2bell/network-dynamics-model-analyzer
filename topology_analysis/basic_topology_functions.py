@@ -29,3 +29,30 @@ def find_input_nodes(ls_nodes, lt_links):
     
     sets_nodes_input = set(ls_nodes).difference(sets_nodes_not_input)
     return list(sets_nodes_input)
+
+
+def split_nodes_to_source_sink(ls_nodes_to_split, ls_nodes, lt_links):
+    """modify a network by spliting some nodes to sink node and source node.
+    source node of the splited node has name "nodename_source" and only has outgoing links of the original node
+    sink node has same property vice versa"""
+    ls_nodes_new = []
+    lt_links_new = []
+    for s_node in ls_nodes:
+        if s_node in ls_nodes_to_split:
+            ls_nodes_new.append(s_node+"_source")
+            ls_nodes_new.append(s_node+"_sink")
+        else:
+            ls_nodes_new.append(s_node)
+    
+    for t_link in lt_links:
+        if (t_link[0] in ls_nodes_to_split) and (t_link[1] in ls_nodes_to_split):
+            t_link_new = (t_link[0]+"_source", t_link[1]+"_sink")
+        elif t_link[0] in ls_nodes_to_split:
+            t_link_new = (t_link[0]+"_source", t_link[1])
+        elif t_link[1] in ls_nodes_to_split:
+            t_link_new = (t_link[0], t_link[1]+"_sink")
+        else:
+            t_link_new = copy.deepcopy(t_link)
+        lt_links_new.append(t_link_new)
+    
+    return ls_nodes_new, lt_links_new

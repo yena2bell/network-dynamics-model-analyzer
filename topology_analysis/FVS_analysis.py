@@ -22,7 +22,7 @@ def FVS_finding(l_nodes_data, lt_links_data):
                     lll_FVSs_of_SCC.append([[l_SCC[0]]])
     
     ll_FVS = lll_FVSs_of_SCC.pop()
-    print(lll_FVSs_of_SCC)
+    #print(lll_FVSs_of_SCC)
     while lll_FVSs_of_SCC:
         ll_FVS_SCC = lll_FVSs_of_SCC.pop()
         ll_FVS_updated = []
