@@ -56,3 +56,15 @@ def split_nodes_to_source_sink(ls_nodes_to_split, ls_nodes, lt_links):
         lt_links_new.append(t_link_new)
     
     return ls_nodes_new, lt_links_new
+
+
+def extract_subnet_topology(ls_nodes, lt_links, ls_nodes_sub):
+    """return ls_links_sub. this is list of links(tuple form) which are elements of lt_links.
+    link of ls_links_sub connect nodes only within ls_nodes_sub"""
+    ls_links_sub = []
+    set_nodes_sub = set(ls_nodes_sub)
+    for t_link in lt_links:
+        if (t_link[0] in set_nodes_sub) and (t_link[1] in set_nodes_sub):
+            ls_links_sub.append(copy.deepcopy(t_link))
+    
+    return ls_links_sub
